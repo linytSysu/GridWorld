@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<project name="HelloWorld" default="run">
+
+	<target name="clean">
+		<delete dir="./build"/>
+	</target>
+
+	<target name="compile" depends="clean">
+		<mkdir dir="build/classes/"/>
+		<javac srcdir="src" destdir="build/classes/"/>
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="build/jar"/>
+		<jar destfile="build/jar/${ant.project.name}.jar">
+			<manifest>
+				<attribute name="Main-class" value="HelloWorld"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" depends="jar">
+		<java classname="HelloWorld">
+			<classpath>
+				<pathelement path="build/classes"/>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="compile-test" depends="compile">
+
+	</target>
+</project>
+
