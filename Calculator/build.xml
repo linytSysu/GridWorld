@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<project name="Calculator" default="run">
+
+    <target name="clean">
+        <delete dir="./build"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="build/classes/"/>
+        <javac srcdir="src" destdir="build/classes/"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/${ant.project.name}.jar">
+            <manifest>
+                <attribute name="Main-class" value="Calculator"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="compile">
+        <java classname="Calculator" fork="yes" dir="build/classes">
+            <classpath>
+                <pathelement path="build/classes"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="compile-test" depends="compile">
+
+    </target>
+</project>
