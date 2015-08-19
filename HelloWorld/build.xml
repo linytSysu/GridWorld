@@ -1,34 +1,60 @@
 <?xml version="1.0" ?>
 <project name="HelloWorld" default="run">
 
-	<target name="clean">
-		<delete dir="./build"/>
-	</target>
+    <path id="classpath">
+        <fileset dir="lib" includes="*.jar"/>
+    </path>
 
-	<target name="compile" depends="clean">
-		<mkdir dir="build/classes/"/>
-		<javac srcdir="src" destdir="build/classes/"/>
-	</target>
+    <target name="clean">
+        <delete dir="./build"/>
+    </target>
 
-	<target name="jar" depends="compile">
-		<mkdir dir="build/jar"/>
-		<jar destfile="build/jar/${ant.project.name}.jar">
-			<manifest>
-				<attribute name="Main-class" value="HelloWorld"/>
-			</manifest>
-		</jar>
-	</target>
+    <target name="compile" depends="clean">
+        <mkdir dir="build/classes/"/>
+        <javac srcdir="src" destdir="build/classes/"/>
+    </target>
 
-	<target name="run" depends="jar">
-		<java classname="HelloWorld">
-			<classpath>
-				<pathelement path="build/classes"/>
-			</classpath>
-		</java>
-	</target>
+    <target name="jar" depends="compile">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/${ant.project.name}.jar">
+            <manifest>
+                <attribute name="Main-class" value="HelloWorld"/>
+            </manifest>
+        </jar>
+    </target>
 
-	<target name="compile-test" depends="compile">
+    <target name="run" depends="jar">
+        <java classname="HelloWorld">
+            <classpath>
+                <pathelement path="build/classes"/>
+            </classpath>
+        </java>
+    </target>
 
-	</target>
+    <target name="compile-test" depends="compile">
+        <javac srcdir="test" destdir="build/classes" classpathref="classpath"/>
+    </target>
+
+    <target name="test" depends="compile-test">
+        <mkdir dir="build/report"/>
+        <mkdir dir="build/test"/>
+        <junit>
+            <classpath>
+                <path location="build/classes"/>
+                <path refid="classpath"/>
+            </classpath>
+            <formatter type="xml"/>
+            <batchtest fork="yes" todir="build/test">
+                <fileset dir="build/classes" includes="*Test.class"/>
+            </batchtest>
+        </junit>
+        <junitreport todir="build/test">
+            <fileset dir="build/test">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="build/report"/>
+        </junitreport>
+    </target>
+
 </project>
 
