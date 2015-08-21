@@ -1,0 +1,78 @@
+<?xml version="1.0" ?>
+<project name="Part2" default="box">
+
+    <path id="classpath">
+        <fileset dir="lib" includes="*.jar"/>
+    </path>
+    
+    <path id="application">
+        <fileset dir="build/jar" includes="*.jar"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="build/classes"/>
+        <copy todir="build/classes">
+            <fileset dir="src" includes="*.gif"/>
+        </copy>
+        <javac srcdir="src" destdir="build/classes" classpathref="classpath"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/${ant.project.name}.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="BugRunner"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="box" depends="jar">
+        <java classname="BoxBugRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="circle" depends="jar">
+        <java classname="CircleBugRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="spiral" depends="jar">
+        <java classname="SpiralBugRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="z" depends="jar">
+        <java classname="ZBugRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="dancing" depends="jar">
+        <java classname="DancingBugRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+</project>
