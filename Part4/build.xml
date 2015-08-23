@@ -1,0 +1,139 @@
+<?xml version="1.0" ?>
+<project name="Part4">
+
+    <path id="classpath">
+        <fileset dir="lib" includes="*.jar"/>
+    </path>
+    
+    <path id="application">
+        <fileset dir="build/jar" includes="*.jar"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile" depends="clean">
+		<mkdir dir="build/classes"/>
+		<copy todir="build/classes">
+			<fileset dir="src" includes="*.gif"/>
+		</copy>
+        <javac srcdir="src" destdir="build/classes" classpathref="classpath"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/${ant.project.name}.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="CritterRunner"/>
+            </manifest>
+        </jar>
+    </target>
+
+	<target name="critter" depends="jar">
+		<java classname="CritterRunner" fork="yes">
+			<classpath>
+				<path refid="application"/>
+				<path refid="classpath"/>
+			</classpath>
+		</java>
+    </target>
+
+    <target name="chame" depends="jar">
+        <java classname="ChameleonRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="crab" depends="jar">
+        <java classname="CrabRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="kid" depends="jar">
+        <java classname="ChameleonKidRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="rock" depends="jar">
+        <java classname="RockHoundRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="bluster" depends="jar">
+        <java classname="BlusterCritterRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="quick" depends="jar">
+        <java classname="QuickCrabRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="kingc" depends="jar">
+        <java classname="KingCrabRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="bee" depends="jar">
+        <java classname="BeeRunner" fork="yes">
+            <classpath>
+                <path refid="application"/>
+                <path refid="classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="compile-test" depends="jar">
+        <javac srcdir="test" destdir="build/classes" classpathref="classpath"/>
+    </target>
+
+    <target name="test" depends="compile-test">
+        <mkdir dir="build/report"/>
+        <mkdir dir="build/test"/>
+        <junit printsummary="yes">
+            <classpath>
+                <path location="build/classes"/>
+                <path refid="classpath"/>
+            </classpath>
+            <formatter type="xml"/>
+            <batchtest fork="yes" todir="build/test">
+                <fileset dir="build/classes" includes="*Test.class"/>
+            </batchtest>
+        </junit>
+        <junitreport todir="build/test">
+            <fileset dir="build/test">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="build/report"/>
+        </junitreport>
+    </target>
+
+</project>
