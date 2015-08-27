@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<project name="jigsaw" default="part2">
+
+    <path id="application">
+        <fileset dir="build/jar" includes="*.jar"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src/" destdir="build/classes"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/${ant.project.name}.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="Jigsaw"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="part1" depends="jar">
+        <java classname="Runners.RunnerPart1" fork="yes">
+            <classpath>
+                <path refid="application"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="part2" depends="jar">
+        <java classname="Runners.RunnerPart2" fork="yes">
+            <classpath>
+                <path refid="application"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="part3" depends="jar">
+        <java classname="Runners.RunnerPart3" fork="yes">
+            <classpath>
+                <path refid="application"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="demo" depends="jar">
+        <java classname="Runners.RunnerDemo" fork="yes">
+            <classpath>
+                <path refid="application"/>
+            </classpath>
+        </java>
+    </target>
+
+</project>
